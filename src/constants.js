@@ -1,52 +1,69 @@
 /**
- * @type { Map<CorrectLevelError, CorrectionLevelType> }
+ * @type { Map<Mode, number> }
  */
-export const CORRECTION_LEVEL = new Map([
-    [
-        "L",
-        {
-            numeric_mode: 187,
-            alpha_numeric_mode: 114,
-            byte_mode: 78,
-            kanji_mode: 48
-        }
-    ],
-    [
-        "M",
-        {
-            numeric_mode: 149,
-            alpha_numeric_mode: 90,
-            byte_mode: 62,
-            kanji_mode: 38
-        }
-    ],
-    [
-        "Q",
-        {
-            numeric_mode: 111,
-            alpha_numeric_mode: 67,
-            byte_mode: 46,
-            kanji_mode: 28
-        }
-    ],
-    [
-        "H",
-        {
-            numeric_mode: 82,
-            alpha_numeric_mode: 50,
-            byte_mode: 34,
-            kanji_mode: 21
-        }
-    ]
+export const MODE_INDICATORS = new Map([
+    ["numeric", 0b0001],
+    ["alpha", 0b0010],
+    ["byte", 0b0100],
+    ["kanji", 0b1000]
 ]);
 
 /**
- * @type { Map<ModeIndicator, string> }
+ * @type { VersionProp[] }
  */
-export const MODE_INDICATORS = new Map([
-    ["numeric", "0001"],
-    ["alpha", "0010"],
-    ["byte", "0100"],
-    ["kanji", "1000"],
-])
-
+export const VERSION = [
+    {
+        version: 1,
+        L: {
+            numeric: 41,
+            alphanumeric: 25,
+            byte: 17,
+            kanji: 10
+        },
+        M: {
+            numeric: 34,
+            alphanumeric: 20,
+            byte: 14,
+            kanji: 8
+        },
+        Q: {
+            numeric: 27,
+            alphanumeric: 16,
+            byte: 11,
+            kanji: 7
+        },
+        H: {
+            numeric: 17,
+            alphanumeric: 10,
+            byte: 7,
+            kanji: 4
+        }
+    },
+    {
+        version: 2,
+        L: {
+            numeric: 77,
+            alphanumeric: 47,
+            byte: 32,
+            kanji: 20
+        },
+        M: {
+            numeric: 63,
+            alphanumeric: 38,
+            byte: 26,
+            kanji: 16
+        },
+        Q: {
+            numeric: 48,
+            alphanumeric: 29,
+            byte: 20,
+            kanji: 12
+        },
+        H: {
+            numeric: 34,
+            alphanumeric: 20,
+            byte: 14,
+            kanji: 8
+        }
+    }
+];
