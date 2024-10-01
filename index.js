@@ -1,8 +1,5 @@
-import {CORRECTION_LEVEL} from "./src/constants.js"
-    import {QrCode, Encoder} from "./src/utils.js"
+import { QrCode } from "./src/qr-code.js"
 
-new QrCode(CORRECTION_LEVEL, "HELLO CC WORLD").build()
+const qrCode = new QrCode("HELLO CC WORLD");
 
-const enc = new Encoder("01234567")
-
-enc.numeric()
+qrCode.build();

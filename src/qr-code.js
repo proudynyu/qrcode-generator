@@ -1,54 +1,24 @@
-import { MODE_INDICATORS, CORRECTION_LEVEL } from "./constants.js";
+import { ERROR_CORRECTION, MODE_INDICATORS, VERSION_BYTE } from "./constants.js";
 
 export class QrCode {
     /**
-     * @type { CorrectLevelError }
-     */
-    #correctionLevelError;
-
-    /**
      * @type { string }
      */
-    #data;
+    #data
 
     /**
-        * @type { number[][] }
-        */
-    #grid
-
-    /**
-     * @param { CorrectLevelError } errorLevel
      * @param { string } data
      */
-    constructor(correctionLevelError, data) {
-        this.#correctionLevelError = correctionLevelError;
+    constructor(data) {
         this.#data = data;
-        this.#grid = []
-    }
-
-
-    /**
-     * @returns { CorrectionLevelType }
-     */
-    #getErrorCorrection() {
-        return CORRECTION_LEVEL.get(this.#correctionLevelError);
     }
 
     /**
      * @param {string} chars
-     * @param {ModeIndicator} mode
+     * @param {number} pad
      * @returns {string[]}
      */
-    #generateBitsFromChars(chars, mode) {
-        if (mode === "alpha") {
-        }
-        if (mode === "byte") {
-        }
-        if (mode === "numeric") {
-        }
-        if (mode === "kanji") {
-        }
-
+    #generateBitsFromChars(chars) {
         const textEncoder = new TextEncoder();
         const encoded = textEncoder.encode(chars);
         return Array.from(encoded).map(byte =>
@@ -56,100 +26,62 @@ export class QrCode {
         );
     }
 
-    /**
-     * @returns { string }
-     */
+    // hard coded for byte mode
     #getEncryptMode() {
-        if (/[a-z]/.test(this.#data)) {
-            return { value: MODE_INDICATORS.get("byte"), key: "byte" };
-        }
-
-        const numeric = /\d/g;
-        const alpha = /[A-Z]|[0-9]/g;
-        if (numeric.test(this.#data)) {
-            if (alpha.test(this.#data)) {
-                return { value: MODE_INDICATORS.get("alpha"), key: "alpha" };
-            }
-            return { value: MODE_INDICATORS.get("numeric"), key: "numeric" };
-        }
-
-        if (alpha.test(this.#data)) {
-            return { value: MODE_INDICATORS.get("alpha"), key: "alpha" };
-        }
-
-        return { value: MODE_INDICATORS.get("kanji"), key: "kanji" };
-    }
-
-    /**
-     * @param { number } size
-     */
-    version() {
-        // todo: get the real size for calculating the version
-        const v = 1
-        const formule = v => {
-            return 17 + v * 4;
-        };
-
-        return formule(size);
+        return { value: MODE_INDICATORS.get("byte"), key: "byte" };
     }
 
     build() {
+        const errorLevel = "L";
         const mode = this.#getEncryptMode();
         const buff = this.#generateBitsFromChars(this.#data);
         const buffLength = buff.length;
-        const data = buff.join("");
+        const charactercount = buffLength < 8 ? 8 : 16;
+        const dataBits = this.#data.length * 8;
+        const sum = (mode.value + dataBits + charactercount) / 8;
+
+        let version = undefined;
+        for (let v of VERSION_BYTE.versions) {
+            if (sum <= v[errorLevel]) {
+                version = v;
+            }
+        }
+        
+        if (!version) {
+            throw new Error("need to implement the rest of the version table or value cannot be used in byte mode");
+        }
+
+        const modeBits = Number(mode.value).toString(2).padStart(4, "0");
+        const characterCountBits = Number(charactercount).toString(2).padStart(8, "0");
+
+        buff.unshift(characterCountBits);
+        buff.unshift(modeBits);
+
+        const terminator = "0000";
+        buff.push(terminator);
+
+        if(buff.length % 8 !== 0) {
+            const rest = buff.length % 8;
+            const misses = 8 - rest;
+
+            for (let i = 0; i < misses; i++) buff.push("0");
+        }
+
+        const errorCorrection = ERROR_CORRECTION[version.version - 1]
+        if (!errorCorrection) {
+            throw new Error("Was not possible to get an error correction")
+        }
+
+        const {ec_codewords_per_block, blocks} = errorCorrection[errorLevel]
+
+        const n = buff.length
+        const k = this.#data.length
 
         console.log({
-            mode,
             buff,
-            buffLength,
-            data
+            l: buff.length,
+            version,
+            modeBits, characterCountBits
         });
-    }
-
-    // patterns
-    #finderPattern() {
-        const squareSize = 7
-        const gridRowSize = this.#grid[0].length - 1
-        const gridColSize = this.#grid.length - 1
-
-        const squaresPoints = [
-            {
-                topLeft: [0,0],
-                topRight: [squareSize, 0],
-                bottomLeft: [0, squareSize],
-                bottomRight: [squareSize, squareSize]
-            },
-            {
-                topLeft: [gridRowSize - squareSize, 0],
-                topRight: [gridRowSize, 0],
-                bottomLeft: [gridRowSize - squareSize, squareSize],
-                bottomRight: [gridRowSize, squareSize]
-            },
-            {
-                topLeft: [0, gridColSize - squareSize],
-                topRight: [squareSize, gridColSize - squareSize],
-                bottomLeft: [0, gridColSize],
-                bottomRight: [squareSize, gridColSize]
-            }
-        ]
-        // todo: this will be implemented on the grid
-        return squaresPoints
-    }
-
-    #darkModule() {
-        const value = 4 * this.version() + 10
-        return this.#grid[9][value]
-    }
-
-    #timingPattern() {}
-
-    #alingPattern() {
-        if (this.version() === 1) {
-            return
-        }
-        const size = this.#grid.length
-        const n = (size * size) - 3
-        return n
     }
 }
