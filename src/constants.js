@@ -86,72 +86,102 @@ export const VERSION_BYTE = {
 export const ERROR_CORRECTION = [
     {
         version: 1,
-        L: { blocks: 1, ec_codewords_per_block: 7 },
-        M: { blocks: 1, ec_codewords_per_block: 10 },
-        Q: { blocks: 1, ec_codewords_per_block: 13 },
-        H: { blocks: 1, ec_codewords_per_block: 17 }
+        totalCodewords: 26,
+        errorCorrectionLevels: {
+            L: { dataCodewords: 19, errorCorrectionCodewords: 7 },
+            M: { dataCodewords: 16, errorCorrectionCodewords: 10 },
+            Q: { dataCodewords: 13, errorCorrectionCodewords: 13 },
+            H: { dataCodewords: 9, errorCorrectionCodewords: 17 }
+        }
     },
     {
         version: 2,
-        L: { blocks: 1, ec_codewords_per_block: 10 },
-        M: { blocks: 1, ec_codewords_per_block: 16 },
-        Q: { blocks: 1, ec_codewords_per_block: 22 },
-        H: { blocks: 1, ec_codewords_per_block: 28 }
+        totalCodewords: 44,
+        errorCorrectionLevels: {
+            L: { dataCodewords: 34, errorCorrectionCodewords: 10 },
+            M: { dataCodewords: 28, errorCorrectionCodewords: 16 },
+            Q: { dataCodewords: 22, errorCorrectionCodewords: 22 },
+            H: { dataCodewords: 16, errorCorrectionCodewords: 28 }
+        }
     },
     {
         version: 3,
-        L: { blocks: 1, ec_codewords_per_block: 15 },
-        M: { blocks: 1, ec_codewords_per_block: 26 },
-        Q: { blocks: 2, ec_codewords_per_block: 18 },
-        H: { blocks: 2, ec_codewords_per_block: 22 }
+        totalCodewords: 70,
+        errorCorrectionLevels: {
+            L: { dataCodewords: 55, errorCorrectionCodewords: 15 },
+            M: { dataCodewords: 44, errorCorrectionCodewords: 26 },
+            Q: { dataCodewords: 34, errorCorrectionCodewords: 36 },
+            H: { dataCodewords: 26, errorCorrectionCodewords: 44 }
+        }
     },
     {
         version: 4,
-        L: { blocks: 1, ec_codewords_per_block: 20 },
-        M: { blocks: 2, ec_codewords_per_block: 18 },
-        Q: { blocks: 2, ec_codewords_per_block: 26 },
-        H: { blocks: 4, ec_codewords_per_block: 16 }
+        totalCodewords: 100,
+        errorCorrectionLevels: {
+            L: { dataCodewords: 80, errorCorrectionCodewords: 20 },
+            M: { dataCodewords: 64, errorCorrectionCodewords: 36 },
+            Q: { dataCodewords: 48, errorCorrectionCodewords: 52 },
+            H: { dataCodewords: 36, errorCorrectionCodewords: 64 }
+        }
     },
     {
         version: 5,
-        L: { blocks: 1, ec_codewords_per_block: 26 },
-        M: { blocks: 2, ec_codewords_per_block: 24 },
-        Q: { blocks: 2, ec_codewords_per_block: 18 },
-        H: { blocks: 2, ec_codewords_per_block: 22 }
+        totalCodewords: 134,
+        errorCorrectionLevels: {
+            L: { dataCodewords: 108, errorCorrectionCodewords: 26 },
+            M: { dataCodewords: 86, errorCorrectionCodewords: 48 },
+            Q: { dataCodewords: 62, errorCorrectionCodewords: 72 },
+            H: { dataCodewords: 46, errorCorrectionCodewords: 88 }
+        }
     },
     {
         version: 6,
-        L: { blocks: 2, ec_codewords_per_block: 18 },
-        M: { blocks: 4, ec_codewords_per_block: 16 },
-        Q: { blocks: 4, ec_codewords_per_block: 24 },
-        H: { blocks: 4, ec_codewords_per_block: 28 }
+        totalCodewords: 172,
+        errorCorrectionLevels: {
+            L: { dataCodewords: 136, errorCorrectionCodewords: 36 },
+            M: { dataCodewords: 108, errorCorrectionCodewords: 62 },
+            Q: { dataCodewords: 76, errorCorrectionCodewords: 96 },
+            H: { dataCodewords: 60, errorCorrectionCodewords: 112 }
+        }
     },
     {
         version: 7,
-        L: { blocks: 2, ec_codewords_per_block: 20 },
-        M: { blocks: 4, ec_codewords_per_block: 18 },
-        Q: { blocks: 6, ec_codewords_per_block: 18 },
-        H: { blocks: 5, ec_codewords_per_block: 26 }
+        totalCodewords: 196,
+        errorCorrectionLevels: {
+            L: { dataCodewords: 156, errorCorrectionCodewords: 40 },
+            M: { dataCodewords: 124, errorCorrectionCodewords: 72 },
+            Q: { dataCodewords: 88, errorCorrectionCodewords: 108 },
+            H: { dataCodewords: 66, errorCorrectionCodewords: 130 }
+        }
     },
     {
         version: 8,
-        L: { blocks: 2, ec_codewords_per_block: 24 },
-        M: { blocks: 4, ec_codewords_per_block: 22 },
-        Q: { blocks: 6, ec_codewords_per_block: 22 },
-        H: { blocks: 6, ec_codewords_per_block: 26 }
+        totalCodewords: 242,
+        errorCorrectionLevels: {
+            L: { dataCodewords: 194, errorCorrectionCodewords: 48 },
+            M: { dataCodewords: 154, errorCorrectionCodewords: 88 },
+            Q: { dataCodewords: 110, errorCorrectionCodewords: 132 },
+            H: { dataCodewords: 86, errorCorrectionCodewords: 156 }
+        }
     },
     {
         version: 9,
-        L: { blocks: 2, ec_codewords_per_block: 30 },
-        M: { blocks: 4, ec_codewords_per_block: 22 },
-        Q: { blocks: 8, ec_codewords_per_block: 20 },
-        H: { blocks: 8, ec_codewords_per_block: 24 }
+        totalCodewords: 292,
+        errorCorrectionLevels: {
+            L: { dataCodewords: 232, errorCorrectionCodewords: 60 },
+            M: { dataCodewords: 182, errorCorrectionCodewords: 110 },
+            Q: { dataCodewords: 132, errorCorrectionCodewords: 160 },
+            H: { dataCodewords: 100, errorCorrectionCodewords: 192 }
+        }
     },
     {
         version: 10,
-        L: { blocks: 2, ec_codewords_per_block: 18 },
-        M: { blocks: 4, ec_codewords_per_block: 26 },
-        Q: { blocks: 8, ec_codewords_per_block: 24 },
-        H: { blocks: 8, ec_codewords_per_block: 28 }
+        totalCodewords: 346,
+        errorCorrectionLevels: {
+            L: { dataCodewords: 274, errorCorrectionCodewords: 72 },
+            M: { dataCodewords: 216, errorCorrectionCodewords: 130 },
+            Q: { dataCodewords: 154, errorCorrectionCodewords: 192 },
+            H: { dataCodewords: 122, errorCorrectionCodewords: 224 }
+        }
     }
 ];
